@@ -1,0 +1,51 @@
+server:
+  port: 9000
+
+ribbon:
+  ReadTimeout: 6000000
+  ConnectTimeout: 6000000
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000000
+zuul:
+  host:
+    connect-timeout-millis: 600000
+    socket-timeout-millis: 6000000
+  force-original-query-string-encoding: true
+  ignored-patterns: /*-server/**
+  routes:
+    member-server-route:
+      path: /member/**
+      service-id: member-server
+      sensitive-headers:
+      custom-sensitive-headers: true
+      ribbon:
+        MaxAutoRetriesNextServer: 0
+        OkToRetryOnAllOperations: false
+        ConnectTimeout: 10000
+        ReadTimeout: 10000
+    good-server-route:
+      path: /good/**
+      service-id: good-server
+      sensitive-headers:
+      custom-sensitive-headers: true
+      ribbon:
+        MaxAutoRetriesNextServer: 0
+        OkToRetryOnAllOperations: false
+        ConnectTimeout: 10000
+        ReadTimeout: 10000
+    seckill-server-route:
+      path: /seckill/**
+      service-id: seckill-server
+      sensitive-headers:
+      custom-sensitive-headers: true
+      ribbon:
+        MaxAutoRetriesNextServer: 0
+        OkToRetryOnAllOperations: false
+        ConnectTimeout: 10000
+        ReadTimeout: 10000
