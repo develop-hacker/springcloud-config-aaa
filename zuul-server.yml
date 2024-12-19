@@ -14,7 +14,7 @@ hystrix:
             timeoutInMilliseconds: 600000000
 zuul:
   host:
-    connect-timeout-millis: 60000000
+    connect-timeout-millis: 600000000
     socket-timeout-millis: 600000000
   force-original-query-string-encoding: true
   ignored-patterns: /*-server/**
@@ -27,8 +27,8 @@ zuul:
       ribbon:
         MaxAutoRetriesNextServer: 0
         OkToRetryOnAllOperations: false
-        ConnectTimeout: 100000
-        ReadTimeout: 100000
+        ConnectTimeout: 10000
+        ReadTimeout: 10000
     good-server-route:
       path: /good/**
       service-id: good-server
@@ -37,8 +37,8 @@ zuul:
       ribbon:
         MaxAutoRetriesNextServer: 0
         OkToRetryOnAllOperations: false
-        ConnectTimeout: 100000
-        ReadTimeout: 100000
+        ConnectTimeout: 10000
+        ReadTimeout: 10000
     seckill-server-route:
       path: /seckill/**
       service-id: seckill-server
@@ -47,5 +47,5 @@ zuul:
       ribbon:
         MaxAutoRetriesNextServer: 0
         OkToRetryOnAllOperations: false
-        ConnectTimeout: 100000
-        ReadTimeout: 100000
+        ConnectTimeout: 10000
+        ReadTimeout: 10000
