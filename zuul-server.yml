@@ -1,51 +1,81 @@
+# =============================================
+# Zuul API 网关配置文件
+# =============================================
+
+# 服务端口配置
 server:
-  port: 9000
+  port: 9000  # 网关服务监听端口
 
+# Ribbon客户端配置
 ribbon:
-  ReadTimeout: 600000000
-  ConnectTimeout: 600000000
+  ReadTimeout: 600000000     # HTTP请求读取超时时间（毫秒）
+  ConnectTimeout: 600000000  # 连接目标服务的超时时间（毫秒）
 
+# Hystrix熔断器配置
 hystrix:
   command:
     default:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 600000000
+            timeoutInMilliseconds: 600000000  # Hystrix命令执行超时时间（毫秒）
+
+# Zuul网关全局配置
 zuul:
+  # 主机级别超时设置
   host:
-    connect-timeout-millis: 600000000
-    socket-timeout-millis: 600000000
-  force-original-query-string-encoding: true
-  ignored-patterns: /*-server/**
+    connect-timeout-millis: 600000000  # Socket连接建立超时时间
+    socket-timeout-millis: 600000000   # Socket数据读取超时时间
+  
+  # 特殊配置
+  force-original-query-string-encoding: true  # 强制使用原始查询字符串编码
+  ignored-patterns: /*-server/**              # 忽略的路由模式（不进行转发）
+
+  # =========================================
+  # 路由配置
+  # =========================================
   routes:
+    # 会员服务路由配置
     member-server-route:
-      path: /member/**
-      service-id: member-server
-      sensitive-headers:
-      custom-sensitive-headers: true
-      ribbon:
-        MaxAutoRetriesNextServer: 0
-        OkToRetryOnAllOperations: false
-        ConnectTimeout: 10000
-        ReadTimeout: 10000
+      path: /member/**              # 匹配的URL路径模式
+      service-id: member-server      # Eureka服务ID
+      sensitive-headers:            # 敏感头列表（为空表示不过滤任何头）
+      custom-sensitive-headers: true # 使用自定义敏感头配置
+      ribbon:                       # 路由级Ribbon配置
+        MaxAutoRetriesNextServer: 0  # 最大重试其他服务器次数
+        OkToRetryOnAllOperations: false  # 是否对所有操作重试（false仅GET）
+        ConnectTimeout: 10000       # 连接超时（毫秒）
+        ReadTimeout: 10000         # 读取超时（毫秒）
+
+    # 商品服务路由配置
     good-server-route:
-      path: /good/**
-      service-id: good-server
-      sensitive-headers:
-      custom-sensitive-headers: true
+      path: /good/**                # 匹配的URL路径模式
+      service-id: good-server       # Eureka服务ID
+      sensitive-headers:            # 敏感头列表
+      custom-sensitive-headers: true # 使用自定义敏感头配置
       ribbon:
-        MaxAutoRetriesNextServer: 0
+        MaxAutoRetriesNextServer: 0  
         OkToRetryOnAllOperations: false
         ConnectTimeout: 10000
         ReadTimeout: 10000
+
+    # 秒杀服务路由配置
     seckill-server-route:
-      path: /seckill/**
-      service-id: seckill-server
-      sensitive-headers:
-      custom-sensitive-headers: true
+      path: /seckill/**             # 匹配的URL路径模式
+      service-id: seckill-server    # Eureka服务ID
+      sensitive-headers:            # 敏感头列表
+      custom-sensitive-headers: true # 使用自定义敏感头配置
       ribbon:
         MaxAutoRetriesNextServer: 0
         OkToRetryOnAllOperations: false
         ConnectTimeout: 10000
         ReadTimeout: 10000
+
+# =============================================
+# 配置说明：
+# 1. 所有超时时间设置为600000000毫秒（约69天）仅用于特殊场景，
+#    生产环境建议设置为合理值（如5-30秒）
+# 2. sensitive-headers为空表示透传所有请求头，
+#    如需安全过滤应明确指定要过滤的头部
+# 3. MaxAutoRetriesNextServer=0表示禁用服务实例切换重试
+# =============================================
