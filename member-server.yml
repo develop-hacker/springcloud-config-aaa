@@ -1,32 +1,15 @@
 server:
   port: 8083
-# 服务器配置
-server:
-  # 服务端口号
-  port: 8083
-
-# Spring 相关配置
 spring:
-  # 数据源配置
   datasource:
-    # JDBC 连接URL，包含MySQL服务器地址、数据库名和连接参数
     url: jdbc:mysql://localhost:3306/shop_member?sslMode=REQUIRED&characterEncoding=UTF-8&connectionTimeZone=GMT%2B8&forceConnectionTimeZoneToSession=true
-    # JDBC 驱动类名（MySQL 8.0+ 驱动）
     driverClassName: com.mysql.cj.jdbc.Driver
-    # 使用的连接池类型（阿里 Druid 连接池）
     type: com.alibaba.druid.pool.DruidDataSource
-    # 数据库用户名
     username: root
-    # 数据库密码
     password: admin
-
-# MyBatis 配置
 mybatis:
   configuration:
-    # 默认获取记录数（影响性能的配置）
     default-fetch-size: 100
-    # SQL 语句默认超时时间（毫秒）
     default-statement-timeout: 3000
-    # 开启自动驼峰命名转换（下划线转驼峰）
     map-underscore-to-camel-case: true
  
