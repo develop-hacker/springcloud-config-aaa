@@ -6,7 +6,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
-    password: admin
+    password: 1234567
 mybatis:
   configuration:
     default-fetch-size: 100
